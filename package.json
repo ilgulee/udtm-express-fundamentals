@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ilgulee/udtm-express-fundamentals/issues"
   },
-  "homepage": "https://github.com/ilgulee/udtm-express-fundamentals#readme"
+  "homepage": "https://github.com/ilgulee/udtm-express-fundamentals#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
