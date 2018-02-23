@@ -1,23 +1,20 @@
 const express = require('express');
+const exphbs  = require('express-handlebars');
 
 const app=express();
 
-//How middleware works
-app.use((req,res,next)=>{
-    //console.log(Date.now());
-    req.name='Ilgu';
-    next();
-});
-
+//Handlebars Middleware
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 
 //Index Route get, post, put, delete
 app.get('/',(req,res)=>{ // '/' is equal to 'localhost:port/'
-    res.send(req.name);
+    res.render('index');
 });
 
 app.get('/about',(req,res)=>{
-    res.send('ABOUT');
+    res.render('about');
 });
 
 const PORT=5000;
