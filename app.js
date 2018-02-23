@@ -10,7 +10,8 @@ app.set('view engine', 'handlebars');
 
 //Index Route get, post, put, delete
 app.get('/',(req,res)=>{ // '/' is equal to 'localhost:port/'
-    res.render('index');
+    const title='Welcome';
+    res.render('index',{title:title});
 });
 
 app.get('/about',(req,res)=>{
