@@ -2,6 +2,14 @@ const express = require('express');
 
 const app=express();
 
+//How middleware works
+app.use((req,res,next)=>{
+    console.log(Date.now());
+    next();
+});
+
+
+
 //Index Route get, post, put, delete
 app.get('/',(req,res)=>{ // '/' is equal to 'localhost:port/'
     res.send('INDEX');
