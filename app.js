@@ -9,6 +9,10 @@ mongoose.connect('mongodb://localhost/practice-db')
 .then(()=>{console.log('MongoDB Connected...')})
 .catch(error=>{console.log(err)});
 
+//Load model
+require('./models/Idea');
+const Idea=mongoose.model('ideas');
+
 //Handlebars Middleware
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
