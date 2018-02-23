@@ -1,7 +1,13 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
+const mongoose = require('mongoose');
 
 const app=express();
+
+//Connect to mongoose, local db or mLab...
+mongoose.connect('mongodb://localhost/practice-db')
+.then(()=>{console.log('MongoDB Connected...')})
+.catch(error=>{console.log(err)});
 
 //Handlebars Middleware
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
