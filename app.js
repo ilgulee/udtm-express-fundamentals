@@ -23,13 +23,17 @@ app.get('/',(req,res)=>{ // '/' is equal to 'localhost:port/'
     const title='Welcome';
     res.render('index',{title:title});
 });
-
+//About Route
 app.get('/about',(req,res)=>{
     res.render('about');
 });
 
-const PORT=5000;
+//Add Idea Form
+app.get('/ideas/add',(req,res)=>{
+    res.render('ideas/add');
+});
 
+const PORT=5000;
 app.listen(PORT,()=>{
     console.log(`Server started on PORT ${PORT}`);
 });
