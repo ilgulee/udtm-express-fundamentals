@@ -1,4 +1,5 @@
 const express = require('express');
+const path=require('path');
 const exphbs = require('express-handlebars');
 const methodOveride = require('method-override');
 const flash = require('connect-flash');
@@ -34,6 +35,10 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
+//set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // parse application/json
 app.use(bodyParser.json());
 
