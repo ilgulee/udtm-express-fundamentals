@@ -1,15 +1,19 @@
 const express = require('express');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 const router = express.Router();
-const {ensureAuthenticated}=require('../helpers/auth');
+const {
+    ensureAuthenticated
+} = require('../helpers/auth');
 
 //Load model
 require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
 //Idea Index Page
-router.get('/', ensureAuthenticated,(req, res) => {
-    Idea.find({}).sort({
+router.get('/', ensureAuthenticated, (req, res) => {
+    Idea.find({
+        user: req.user.id
+    }).sort({
         date: 'desc'
     }).then(ideas => {
         res.render('ideas/index', {
@@ -19,23 +23,28 @@ router.get('/', ensureAuthenticated,(req, res) => {
 });
 
 //Add Idea Form
-router.get('/add',ensureAuthenticated, (req, res) => {
+router.get('/add', ensureAuthenticated, (req, res) => {
     res.render('ideas/add');
 });
 
 //Edit Idea Form
-router.get('/edit/:id',ensureAuthenticated, (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
     Idea.findOne({
         _id: req.params.id
     }).then(idea => {
-        res.render('ideas/edit', {
-            idea: idea
-        });
+        if (idea.user != req.user.id) {
+            req.flash('error_msg', 'Not Authorized');
+            res.redirect('/ideas');
+        } else {
+            res.render('ideas/edit', {
+                idea: idea
+            });
+        }
     });
 });
 
 //Process Form Data from Idea Form without using Express Validation
-router.post('/', ensureAuthenticated,(req, res) => {
+router.post('/', ensureAuthenticated, (req, res) => {
     let errors = [];
     if (!req.body.title) {
         errors.push({
@@ -56,7 +65,8 @@ router.post('/', ensureAuthenticated,(req, res) => {
     } else {
         const newUser = {
             title: req.body.title,
-            details: req.body.details
+            details: req.body.details,
+            user: req.user.id
         };
         new Idea(newUser).save().then(idea => {
             req.flash('success_msg', 'Video idea added');
@@ -66,7 +76,7 @@ router.post('/', ensureAuthenticated,(req, res) => {
 });
 
 //Edit Form Process
-router.put('/:id', ensureAuthenticated,(req, res) => {
+router.put('/:id', ensureAuthenticated, (req, res) => {
     Idea.findOne({
         _id: req.params.id
     }).then(idea => {
@@ -80,7 +90,7 @@ router.put('/:id', ensureAuthenticated,(req, res) => {
 });
 
 //Delete Idea
-router.delete('/:id',ensureAuthenticated, (req, res) => {
+router.delete('/:id', ensureAuthenticated, (req, res) => {
     Idea.remove({
         _id: req.params.id
     }).then(() => {
@@ -89,4 +99,4 @@ router.delete('/:id',ensureAuthenticated, (req, res) => {
     })
 });
 
-module.exports=router;
+module.exports = router;
